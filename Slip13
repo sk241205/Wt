@@ -1,0 +1,126 @@
+<!-- Page 1 name- slip13.html - ->
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Name Validation</title>
+
+<script>
+
+function checkName() {
+
+const name = document.getElementById("nameInput").value;
+
+const xhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = function() {
+
+if (this.readyState == 4 && this.status == 200) {
+
+document.getElementById("response").innerHTML = this.responseText;
+
+}
+
+};
+
+xhr.open("GET", "name_check.php?name=" + encodeURIComponent(name),
+
+true);
+
+xhr.send();
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<h1>Name Checker</h1>
+
+Enter your name: <input type="text" id="nameInput" onkeyup="checkName()">
+
+<div id="response"></div>
+
+</body>
+
+</html>
+
+<!-- Page 2 name- name_check.php - ->
+
+<?php
+
+$name = $_GET['name'] ?? '';
+
+$masters = ['Rohit', 'Virat', 'Dhoni', 'Ashwin', 'Harbhajan'];
+
+if (empty($name)) {
+
+echo "Stranger, please tell me your name!";
+
+} elseif (in_array(ucfirst($name), $masters)) {
+
+echo "Hello, master!";
+
+} else {
+
+echo "$name, I don't know you!";
+
+}
+
+?>
+
+2) download nursery dataset from UCI. Build a linear regression model by identifying independent
+
+#d target variable. Split the variables into training and testing sets and print them. Build a
+
+
+simple linear regression model for predicting purchases.
+
+import numpy as np
+
+import pandas as pd
+
+from sklearn.model_selection import train_test_split
+
+from sklearn.linear_model import LinearRegression
+
+from sklearn.metrics import mean_squared_error
+
+import matplotlib.pyplot as plt
+
+nursery_data = pd.read_csv(r'C:\Users\faimp\OneDrive\Documents\CSV\nursery.csv')
+
+X = nursery_data[['social']]
+
+y = nursery_data[['health']]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+
+model.fit(X_train, y_train)
+
+train_rmse = np.sqrt(mean_squared_error(y_train, model.predict(X_train)))
+
+test_rmse = np.sqrt(mean_squared_error(y_test, model.predict(X_test)))
+
+print("Training RMSE:", train_rmse)
+
+print("Testing RMSE:", test_rmse)
+
+plt.scatter(X_test, y_test, color='green')
+
+plt.plot(X_train, model.predict(X_train), color='red', linewidth=3)
+
+plt.title('Regression (Social vs Health)')
+
+plt.xlabel('Social')
+
+plt.ylabel('Health')
+
+plt.show()

@@ -1,0 +1,153 @@
+<!-- Page 2 name- slip14.html - ->
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Teacher Details</title>
+
+<script>
+
+function getTeacherDetails() {
+
+const teacherName = document.getElementById("teacherSelect").value;
+
+const xhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = function() {
+
+if (this.readyState == 4 && this.status == 200) {
+
+document.getElementById("teacherDetails").innerHTML =
+
+this.responseText;
+
+}
+
+};
+
+xhr.open("GET", "get_teacher.php?name=" +
+
+encodeURIComponent(teacherName), true);
+
+xhr.send();
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<h1>Teacher Information System</h1>
+
+Select Teacher:
+
+<select id="teacherSelect" onchange="getTeacherDetails()">
+
+<option value="">--Select--</option>
+
+<option value="John Smith">John Smith</option>
+
+<option value="Mary Johnson">Mary Johnson</option>
+
+<option value="David Lee">David Lee</option>
+
+</select>
+
+<div id="teacherDetails"></div>
+
+</body>
+
+</html>
+
+<!-- Page 1 name- get_teacher.php - ->
+
+<?php
+
+$teachers = [
+
+'John Smith' => ['tno' => '101', 'qualification' => 'PhD', 'salary' => '80000'],
+
+'Mary Johnson' => ['tno' => '102', 'qualification' => 'MSc', 'salary' => '75000'],
+
+'David Lee' => ['tno' => '103', 'qualification' => 'MBA', 'salary' => '85000']
+
+];
+
+$name = $_GET['name'] ?? '';
+
+if (!empty($name) && isset($teachers[$name])) {
+
+$t = $teachers[$name];
+
+echo "<h3>Teacher Details</h3>";
+
+echo "<table border='1'>";
+
+echo "<tr><th>Teacher No</th><td>{$t['tno']}</td></tr>";
+
+echo "<tr><th>Name</th><td>{$name}</td></tr>";
+
+echo "<tr><th>Qualification</th><td>{$t['qualification']}</td></tr>";
+
+echo "<tr><th>Salary</th><td>{$t['salary']}</td></tr>";
+
+echo "</table>";
+
+} else {
+
+echo "Please select a teacher";
+
+}
+
+?>
+
+2) Create the following dataset in python & Convert the categorical values into numeric
+
+format.Apply the apriori algorithm on the above dataset to generate the frequent itemsets and
+
+association rules. Repeat the process with different min_sup values.
+
+import numpy as np
+
+import pandas as pd
+
+from mlxtend.frequent_patterns import apriori,
+
+association_rules
+
+transactions =
+
+[['eggs','milk','bread'],['eggs','apple'],['milk','bread'],['apple',
+
+'milk'], ['milk','apple','bread']]
+
+from mlxtend.preprocessing import TransactionEncoder
+
+te = TransactionEncoder()
+
+te_array = te.fit(transactions).transform(transactions)
+
+df = pd.DataFrame(te_array, columns=te.columns_)
+
+df = df.astype(int)
+
+freq_items = apriori(df, min_support=0.5,
+
+use_colnames=True)
+
+print(freq_items)
+
+rules = association_rules(freq_items, metric='support',
+
+min_threshold=0.05)
+
+rules = rules.sort_values(['support', 'confidence'],
+
+ascending=[False, False])
+
+print(rules)

@@ -1,0 +1,98 @@
+<html>
+
+<head>
+
+<title>Student Name Form</title>
+
+<style>
+
+.highlight { color: red; font-size: 18px; }
+
+#studentImage { width: 100px; transition: width 0.5s; }
+
+</style>
+
+<script>
+
+function checkName() {
+
+const name = document.getElementById("studentName").value;
+
+const nameField = document.getElementById("studentName");
+
+if (name.trim() !== "") {
+
+nameField.className = "highlight";
+
+}
+
+}
+
+function resizeImage() {
+
+const img = document.getElementById("studentImage");
+
+img.style.width = (img.width === 200) ? "100px" : "200px";
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<h1>Student Information</h1>
+
+<form>
+
+Student Name: <input type="text" id="studentName" onblur="checkName()"><br>
+
+<img id="studentImage" src="https://via.placeholder.com/100"
+
+onclick="resizeImage()" alt="Student Image">
+
+</form>
+
+</body>
+
+</html>
+
+2) Create the following dataset in python & Convert the categorical values into numeric
+
+format.Apply the apriori algorithm on the above dataset to generate the frequent itemsets and
+
+associationrules. Repeat the process with different min_sup values.
+
+
+import numpy as np
+
+import pandas as pd
+
+from mlxtend.frequent_patterns import apriori, association_rules
+
+transactions = [['eggs','milk','bread'],['eggs','apple'],['milk','bread'],['apple',
+
+'milk'], ['milk','apple','bread']]
+
+from mlxtend.preprocessing import TransactionEncoder
+
+te=TransactionEncoder()
+
+te_array=te.fit(transactions).transform(transactions)
+
+df=pd.DataFrame(te_array, columns=te.columns_)
+
+df = df.astype(int)
+
+df
+
+freq_items = apriori(df, min_support = 0.5, use_colnames = True)
+
+print(freq_items)
+
+rules = association_rules(freq_items, metric ='support', min_threshold=0.05)
+
+rules = rules.sort_values(['support', 'confidence'], ascending =[False,False])
+
+rules= rules.sort_values(['support', 'confidence'], ascending =[False,False])

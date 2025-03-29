@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Autocomplete Example</title>
+
+<script>
+
+const suggestions = [
+
+"Apple", "Banana", "Cherry", "Date", "Elderberry",
+
+"Fig", "Grape", "Honeydew", "Kiwi", "Lemon"
+
+];
+
+function showSuggestions() {
+
+const input = document.getElementById("searchBox").value.toLowerCase();
+
+const suggestionList = document.getElementById("suggestions");
+
+suggestionList.innerHTML = "";
+
+if (input.length === 0) return;
+
+const matches = suggestions.filter(fruit =>
+
+fruit.toLowerCase().startsWith(input)
+
+);
+
+matches.forEach(fruit => {
+
+const li = document.createElement("li");
+
+li.textContent = fruit;
+
+li.onclick = function() {
+
+document.getElementById("searchBox").value = fruit;
+
+suggestionList.innerHTML = "";
+
+};
+
+suggestionList.appendChild(li);
+
+});
+
+}
+
+</script>
+
+<style>
+
+#suggestions {
+
+list-style: none;
+
+padding: 0;
+
+margin: 0;
+
+border: 1px solid #ccc;
+
+width: 200px;
+
+}
+
+#suggestions li {
+
+
+padding: 5px;
+
+cursor: pointer;
+
+}
+
+#suggestions li:hover {
+
+background-color: #f0f0f0;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Fruit Search</h1>
+
+<input type="text" id="searchBox" onkeyup="showSuggestions()" placeholder="Start
+
+typing...">
+
+<ul id="suggestions"></ul>
+
+</body>
+
+</html>
+
+2) Create the following dataset in python & Convert the categorical values into numeric
+
+format.Apply the apriori algorithm on the above dataset to generate the frequent itemsets and
+
+association rules. Repeat the process with different min_sup values
+
+import numpy as np
+
+import pandas as pd
+
+from mlxtend.frequent_patterns import apriori, association_rules
+
+transactions = [['eggs','milk','bread'],['eggs','apple'],['milk','bread'],['apple', 'milk'],
+
+['milk','apple','bread']] from mlxtend.preprocessing import TransactionEncoder
+
+te=TransactionEncoder()
+
+te_array=te.fit(transactions).transform(transactions)
+
+df=pd.DataFrame(te_array, columns=te.columns_)
+
+df = df.astype(int)
+
+df
+
+freq_items = apriori(df, min_support = 0.5, use_colnames = True)
+
+print(freq_items)
+
+rules = association_rules(freq_items, metric ='support', min_threshold=0.05)
+
+rules = rules.sort_values(['support', 'confidence'], ascending =[False,False])

@@ -1,0 +1,111 @@
+Create a table student having attributes(rollno, name, class) containing atleast 5 recodes.
+
+Using codeigniter, display all its records.
+
+Name - Student.php
+
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Student extends CI_Controller {
+
+public function __construct() {
+
+parent::__construct();
+
+$this->load->database();
+
+$this->load->helper('url');
+
+}
+
+public function index() {
+
+$query = $this->db->get('student');
+
+$data['students'] = $query->result();
+
+$this->load->view('student_list', $data);
+
+}
+
+}
+
+Name - student_list.php
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Student List</title>
+
+<style>
+
+table { border-collapse: collapse; width: 50%; }
+
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+
+th { background-color: #f2f2f2; }
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Student Records</h1>
+
+<table>
+
+<tr>
+
+<th>Roll No</th>
+
+<th>Name</th>
+
+<th>Class</th>
+
+</tr>
+
+<?php foreach ($students as $student): ?>
+
+<tr>
+
+<td><?php echo $student->rollno; ?></td>
+
+<td><?php echo $student->name; ?></td>
+
+<td><?php echo $student->class; ?></td>
+
+</tr>
+
+<?php endforeach; ?>
+
+</table>
+
+</body>
+
+</html>
+
+2)Consider any text paragraph. Preprocess the text to remove any special characters and digit.
+
+import re
+
+text = "hello 1234 this is @"
+
+def preprocess_text(text):
+
+text = re.sub(r'[^a-zA-Z\s]', '', text)
+
+text = re.sub(r'\d+', '', text)
+
+return text.lower()
+
+preprocessed_text = preprocess_text(text)
+
+print("Original Text:\n", text)
+
+print("\nAfter processing text:\n", preprocessed_text)

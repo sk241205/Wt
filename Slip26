@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Employee Details</title>
+
+<script>
+
+function getEmployeeDetails() {
+
+const empName = document.getElementById("empSelect").value;
+
+const xhr = new XMLHttpRequest();
+
+xhr.onreadystatechange = function() {
+
+if (this.readyState == 4 && this.status == 200) {
+
+document.getElementById("empDetails").innerHTML = this.responseText;
+
+}
+
+};
+
+xhr.open("GET", "get_employee.php?name=" + encodeURIComponent(empName), true);
+
+xhr.send();
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<h1>Employee Information System</h1>
+
+Select Employee:
+
+<select id="empSelect" onchange="getEmployeeDetails()">
+
+<option value="">-- Select --</option>
+
+<option value="John Smith">John Smith</option>
+
+<option value="Emily Johnson">Emily Johnson</option>
+
+<option value="Michael Brown">Michael Brown</option>
+
+</select>
+
+<div id="empDetails"></div>
+
+</body>
+
+</html>
+
+<!-- get_employee.php -->
+
+<?php
+
+// Database connection
+
+$conn = new mysqli("localhost", "username", "password", "company_db");
+
+// Check connection
+
+if ($conn->connect_error) {
+
+die("Connection failed: " . $conn->connect_error);
+
+}
+
+$empName = $_GET['name'] ?? '';
+
+if (!empty($empName)) {
+
+$stmt = $conn->prepare("SELECT * FROM EMP WHERE ename = ?");
+
+$stmt->bind_param("s", $empName);
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+
+$row = $result->fetch_assoc();
+
+echo "<table border='1'>
+
+<tr><th>Employee No</th><td>".$row['eno']."</td></tr>
+
+<tr><th>Name</th><td>".$row['ename']."</td></tr>
+
+<tr><th>Designation</th><td>".$row['designation']."</td></tr>
+
+<tr><th>Salary</th><td>".$row['salary']."</td></tr>
+
+</table>";
+
+} else {
+
+echo "No employee found with that name.";
+
+}
+
+$stmt->close();
+
+}
+
+$conn->close();
+
+?>
